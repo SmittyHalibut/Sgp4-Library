@@ -112,7 +112,7 @@ double Sgp4::sgp4wrap( double jdCe){
 
 // returns next overpass maximum, starting from a maximum called startpoint
 bool Sgp4::nextpass(passinfo* passdata, int itterations) {
-	Sgp4::nextpass( passdata, itterations, false);
+	return (Sgp4::nextpass( passdata, itterations, false));
 }
 
 // returns next overpass maximum, starting from a maximum called startpoint
