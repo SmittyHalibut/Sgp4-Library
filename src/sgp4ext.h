@@ -30,74 +30,22 @@
 
 // ------------------------- function declarations -------------------------
 
-double  sgn
-        (
-          double x
-        );
-
-double  mag
-        (
-          double x[3]
-        );
-
-void    cross
-        (
-          double vec1[3], double vec2[3], double outvec[3]
-        );
-
-double  dot
-        (
-          double x[3], double y[3]
-        );
-
-double  angle
-        (
-          double vec1[3],
-          double vec2[3]
-        );
-
-void    newtonnu
-        (
-          double ecc, double nu,
-          double& e0, double& m
-        );
-
-double  asinh
-        (
-          double xval
-        );
-
-void    rv2coe
-        (
-          double r[3], double v[3], double mu,
-          double& p, double& a, double& ecc, double& incl, double& omega, double& argp,
-          double& nu, double& m, double& arglat, double& truelon, double& lonper
-        );
-
-void    jday
-        (
-          int year, int mon, int day, int hr, int minute, double sec,
-          int timezone, bool daylightsaving, double& jd
-        );
-
-void    days2mdhms
-        (
-          int year, double days,
-          int& mon, int& day, int& hr, int& minute, double& sec
-        );
-
-void    invjday
-        (
-          double jd, int timezone, bool daylightsaving,
-          int& year, int& mon, int& day,
-          int& hr, int& minute, double& sec
-        );
-
-float floatmod(float a, float b);
-
-double floatmod(double a, double b);
-
-bool summertime(int year, int month, int day, int hour, int tzHours);
+double  sgn(double x);
+double  mag(double x[3]);
+void    cross(double vec1[3], double vec2[3], double outvec[3]);
+double  dot(double x[3], double y[3]);
+double  angle(double vec1[3], double vec2[3]);
+void    newtonnu(double ecc, double nu, double& e0, double& m);
+double  asinh(double xval);
+void    rv2coe(double r[3], double v[3], double mu,
+    double& p, double& a, double& ecc, double& incl, double& omega, double& argp,
+    double& nu, double& m, double& arglat, double& truelon, double& lonper);
+void    jday(int year, int mon, int day, int hr, int minute, double sec, int timezone, bool daylightsaving, double& jd);
+void    days2mdhms(int year, double days,int& mon, int& day, int& hr, int& minute, double& sec);
+void    invjday(double jd, int timezone, bool daylightsaving, int& year, int& mon, int& day, int& hr, int& minute, double& sec);
+float   floatmod(float a, float b);
+double  floatmod(double a, double b);
+bool    summertime(int year, int month, int day, int hour, int tzHours);
 
 #endif
 

@@ -32,16 +32,7 @@
 #include "sgp4unit.h"   // for sgp4init and getgravconst
 
 // ------------------------- function declarations -------------------------
+void twoline2rv(char longstr1[130], char longstr2[130], char opsmode, gravconsttype  whichconst, elsetrec& satrec);
+bool twolineChecksum(const char longstr[]);
 
-void twoline2rv
-     (
-      char      longstr1[130], char longstr2[130],
-      char opsmode, gravconsttype  whichconst,
-      elsetrec& satrec
-     );
-
- bool twolineChecksum
-      (
-       const char      longstr[]
-      );
 #endif
