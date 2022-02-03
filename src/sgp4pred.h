@@ -23,9 +23,9 @@ enum visibletype
 
 enum shadowtransit
 {
-	none,
-	enter,
-	leave
+  none,
+  enter,
+  leave
 };
 
 struct passinfo
@@ -68,19 +68,19 @@ class Sgp4 {
     double jdCp;    //Current used julian date for prediction
 
     double sgp4wrap( double jdCe);  //returns the elevation for a given julian date
-	double visiblewrap(double jdCe);  //returns angle between sun surface and earth surface
+  double visiblewrap(double jdCe);  //returns angle between sun surface and earth surface
 
   public:
     char satName[25];   ///satellite name
-	char line1[80];     //tle line 1
-	char line2[80];     //tle line 2
+  char line1[80];     //tle line 1
+  char line2[80];     //tle line 2
 
     double revpday;  ///revolutions per day
     elsetrec satrec;
     double siteLat, siteLon, siteAlt, siteLatRad, siteLonRad;
     double satLat, satLon, satAlt, satAz, satEl, satDist,satJd;
     double sunAz, sunEl;
-	int16_t satVis;
+  int16_t satVis;
 
     Sgp4();
     bool init(const char naam[], char longstr1[130], char longstr2[130]);  //initialize parameters from 2 line elements
@@ -91,16 +91,16 @@ class Sgp4 {
     void findsat(unsigned long);  //find satellite position from unix time
 
     bool nextpass( passinfo* passdata, int itterations); // calculate next overpass data, returns true if succesfull
-	bool nextpass(passinfo* passdata, int itterations, bool direc); //direc = false for forward search, true for backwards search
+  bool nextpass(passinfo* passdata, int itterations, bool direc); //direc = false for forward search, true for backwards search
     bool nextpass(passinfo* passdata, int itterations, bool direc, double minimumElevation); //minimumElevation = minimum elevation above the horizon (in degrees)
     bool initpredpoint( double juliandate , double startelevation); //initialize prediction algorithm, starting from a juliandate and predict passes aboven startelevation
     bool initpredpoint( unsigned long unix, double startelevation); // from unix time
 
     int16_t visible();  //check if satellite is visible
-	int16_t visible(bool& notdark, double& deltaphi);
+  int16_t visible(bool& notdark, double& deltaphi);
 
-	double getpredpoint();
-	void setpredpoint(double jdCe);
+  double getpredpoint();
+  void setpredpoint(double jdCe);
 } ;
 
 

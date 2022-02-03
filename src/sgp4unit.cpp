@@ -1407,8 +1407,8 @@ bool sgp4init
      satrec.ecco    = xecco;
      satrec.argpo   = xargpo;
      satrec.inclo   = xinclo;
-     satrec.mo	    = xmo;
-     satrec.no	    = xno;
+     satrec.mo       = xmo;
+     satrec.no       = xno;
      satrec.nodeo   = xnodeo;
 
      // sgp4fix add opsmode
@@ -1424,7 +1424,7 @@ bool sgp4init
      x2o3   =  2.0 / 3.0;
 
      satrec.init = 'y';
-     satrec.t	 = 0.0;
+     satrec.t    = 0.0;
 
      initl
          (
@@ -1625,8 +1625,8 @@ bool sgp4init
 *  author        : david vallado                  719-573-2600   28 jun 2005
 *
 *  inputs        :
-*    satrec	 - initialised structure from sgp4init() call.
-*    tsince	 - time eince epoch (minutes)
+*    satrec    - initialised structure from sgp4init() call.
+*    tsince    - time eince epoch (minutes)
 *
 *  outputs       :
 *    r           - position vector                     km

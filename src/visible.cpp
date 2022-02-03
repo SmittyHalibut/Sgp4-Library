@@ -98,38 +98,38 @@ void sun ( double jd, double rsun[3] ){
 
 //returns angle between sun surface and earth surface, from the viewpoint of the satellite
 double Sgp4::visiblewrap(double jdCe) {
-	double rsun[3];   //vector between earth and sun
-	double razell[3];
+   double rsun[3];   //vector between earth and sun
+   double razell[3];
 
-	sun(jdC, rsun);  //calculate sun poistion vector
-	rv2azel(rsun, siteLatRad, siteLonRad, siteAlt, jdC, razell);  //calc sun satEl
+   sun(jdC, rsun);  //calculate sun poistion vector
+   rv2azel(rsun, siteLatRad, siteLonRad, siteAlt, jdC, razell);  //calc sun satEl
 
-	double rsunsat[3]; //vector between sat and sun
-	double rearth[3];
-	double magsunsat, magearth;
-	double phiearth, phisun, phi;
-	double rnomearth, rnomsun;
+   double rsunsat[3]; //vector between sat and sun
+   double rearth[3];
+   double magsunsat, magearth;
+   double phiearth, phisun, phi;
+   double rnomearth, rnomsun;
 
-	sgp4wrap(jdCe);
+   sgp4wrap(jdCe);
 
-	rearth[0] = -ro[0];
-	rearth[1] = -ro[1];
-	rearth[2] = -ro[2];
+   rearth[0] = -ro[0];
+   rearth[1] = -ro[1];
+   rearth[2] = -ro[2];
 
-	rsunsat[0] = rsun[0] + rearth[0];
-	rsunsat[1] = rsun[1] + rearth[1];
-	rsunsat[2] = rsun[2] + rearth[2];
+   rsunsat[0] = rsun[0] + rearth[0];
+   rsunsat[1] = rsun[1] + rearth[1];
+   rsunsat[2] = rsun[2] + rearth[2];
 
-	magsunsat = mag(rsunsat);
-	magearth = mag(rearth);
+   magsunsat = mag(rsunsat);
+   magearth = mag(rearth);
 
-	phiearth = asin(earthradius / magearth);
-	phisun = asin(sunradius / magsunsat);
+   phiearth = asin(earthradius / magearth);
+   phisun = asin(sunradius / magsunsat);
 
-	phi = acos(dot(rearth, rsunsat) / magsunsat / magearth);
+   phi = acos(dot(rearth, rsunsat) / magsunsat / magearth);
 
-	return phi - phisun - phiearth;   ///grens op bijschaduw
-	//return -phiearth + phisun + phi;  ///grens op echte schaduw
+   return phi - phisun - phiearth;   ///grens op bijschaduw
+   //return -phiearth + phisun + phi;  ///grens op echte schaduw
 
 }
 
@@ -145,13 +145,13 @@ int16_t Sgp4::visible(bool& notdark, double& deltaphi){
 
     sunEl = razell[2] * 180 / pi;
       sunAz = razell[1] * 180 / pi;
-  	  notdark = (razell[2] > sunoffset); //sun aboven -6°  => not dark enough
+       notdark = (razell[2] > sunoffset); //sun aboven -6°  => not dark enough
 
     double rsunsat[3]; //vector between sat and sun
     double rearth[3];
     double magsunsat, magearth;
     double phiearth, phisun, phi;
-	double rnomearth, rnomsun;
+   double rnomearth, rnomsun;
 
     rearth[0] = -ro[0];
     rearth[1] = -ro[1];
@@ -168,7 +168,7 @@ int16_t Sgp4::visible(bool& notdark, double& deltaphi){
     phisun = asin(sunradius/magsunsat);
 
     phi = acos(dot(rearth,rsunsat)/magsunsat/magearth);
-	deltaphi = phi - phisun - phiearth;
+   deltaphi = phi - phisun - phiearth;
 
     if (phiearth > phisun && phi < phiearth - phisun){   //umbral eclipse
         return 0;
@@ -191,13 +191,13 @@ int16_t Sgp4::visible(bool& notdark, double& deltaphi){
 }
 
 int16_t Sgp4::visible() {
-	bool notdark;
-	double deltaphi;
-	int16_t viss = visible(notdark,deltaphi);
-	if (notdark) {
-		return -1;
-	}
-	else {
-		return viss;
-	}
+   bool notdark;
+   double deltaphi;
+   int16_t viss = visible(notdark,deltaphi);
+   if (notdark) {
+      return -1;
+   }
+   else {
+      return viss;
+   }
 }

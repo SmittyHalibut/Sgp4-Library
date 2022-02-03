@@ -539,17 +539,17 @@ void rv2coe
 *  algorithm     : calculate the answer in one step for efficiency
 *
 *  author        : david vallado                  719-573-2600    1 mar 2001
-*  changed by	 : bram gurdebeke
+*  changed by    : bram gurdebeke
 *
 *  inputs          description                    range / units
 *    year        - year                           1900 .. 2100
 *    mon         - month                          1 .. 12
 *    day         - day                            1 .. 28,29,30,31
-*    hr          - time hour					  0 .. 23
-*    min         - time min						  0 .. 59
-*    sec         - time sec						  0.0 .. 59.999
-*    timezone	 - hours from utc                 -11 .. 14
-*	 daylighsaving								  true/false
+*    hr          - time hour                 0 .. 23
+*    min         - time min                    0 .. 59
+*    sec         - time sec                    0.0 .. 59.999
+*    timezone    - hours from utc                 -11 .. 14
+*    daylighsaving                          true/false
 *
 *  outputs       :
 *    jd          - julian date                    days from 4713 bc
@@ -568,7 +568,7 @@ void rv2coe
 void    jday
         (
           int year, int mon, int day, int hr, int minute, double sec,
-		  int timezone, bool daylightsaving, double& jd
+        int timezone, bool daylightsaving, double& jd
         )
    {
      jd = 367.0 * year -
@@ -700,7 +700,7 @@ void    invjday
      int leapyrs;
      double    days, tu, temp;
 
-	 jd += (double)timezone / 24.0;
+    jd += (double)timezone / 24.0;
 
      /* --------------- find year and days of the year --------------- */
      temp    = jd - 2415019.5;
@@ -721,9 +721,9 @@ void    invjday
 
      /* ----------------- find remaing data  ------------------------- */
      days2mdhms(year, days, mon, day, hr, minute, sec);
-	 if (daylightsaving && summertime(year, mon, day, hr, timezone)) {
-		 days2mdhms(year, days + 1.0/24.0, mon, day, hr, minute, sec);
-	 }
+    if (daylightsaving && summertime(year, mon, day, hr, timezone)) {
+       days2mdhms(year, days + 1.0/24.0, mon, day, hr, minute, sec);
+    }
      sec = sec - 0.00000086400;
    }  // end invjday
 
@@ -740,11 +740,11 @@ double floatmod(double a, double b)
 bool summertime(int year, int month, int day, int hour, int tzHours)
 // input parameters: "normal time" for year, month, day, hour and tzHours (0=UTC, 1=MEZ)
 {
-	if (month<3 || month>10) return false; // keine Sommerzeit in Jan, Feb, Nov, Dez
-	if (month>3 && month<10) return true; // Sommerzeit in Apr, Mai, Jun, Jul, Aug, Sep
-	if (((month == 3) && ((hour + 24 * day) >= (1 + tzHours + 24 * (31 - (5 * year / 4 + 4) % 7))))
+   if (month<3 || month>10) return false; // keine Sommerzeit in Jan, Feb, Nov, Dez
+   if (month>3 && month<10) return true; // Sommerzeit in Apr, Mai, Jun, Jul, Aug, Sep
+   if (((month == 3) && ((hour + 24 * day) >= (1 + tzHours + 24 * (31 - (5 * year / 4 + 4) % 7))))
       || ((month == 10) && ((hour + 24 * day) < (1 + tzHours + 24 * (31 - (5 * year / 4 + 1) % 7)))))
-		return true;
-	else
-		return false;
+      return true;
+   else
+      return false;
 }

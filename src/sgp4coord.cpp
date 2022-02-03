@@ -396,5 +396,5 @@ double getJulianFromUnix(double unixSecs)
 
 unsigned long getUnixFromJulian(double julian)
 {
-	return (unsigned long)((julian - 2440587.5)*86400.0 + 0.5);
+   return (unsigned long)((julian - 2440587.5)*86400.0 + 0.5);
 }

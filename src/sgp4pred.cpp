@@ -32,7 +32,7 @@ Sgp4::Sgp4(){
 bool Sgp4::init(const char naam[24], char longstr1[130], char longstr2[130]){
 
   if (strcmp(longstr1, line1) == 0) {
-	  return false;
+    return false;
   }
 
   strlcpy(satName, naam, sizeof(satName));
@@ -112,12 +112,12 @@ double Sgp4::sgp4wrap( double jdCe){
 
 // returns next overpass maximum, starting from a maximum called startpoint
 bool Sgp4::nextpass(passinfo* passdata, int itterations) {
-	return (Sgp4::nextpass( passdata, itterations, false, 0.0));
+  return (Sgp4::nextpass( passdata, itterations, false, 0.0));
 }
 
 // returns next overpass. Set direc to false for forward search, true for backwards search
 bool Sgp4::nextpass(passinfo* passdata, int itterations, bool direc) {
-	return (Sgp4::nextpass( passdata, itterations, direc, 0.0));
+  return (Sgp4::nextpass( passdata, itterations, direc, 0.0));
 }
 
 // returns next overpass maximum, starting from a maximum called startpoint
@@ -129,41 +129,41 @@ bool Sgp4::nextpass( passinfo* passdata, int itterations, bool direc, double min
     double range,jump;
     int i;
     double max_elevation = -1.0;
-	int16_t vissum,vis;
-	bool isdaylight;
-	double startphi, stopphi,phi;
+  int16_t vissum,vis;
+  bool isdaylight;
+  double startphi, stopphi,phi;
 
     range = 0.25/revpday;
 
-	if (direc) {                   ///set search direction
-		jump = -1.0 / revpday;
-	}
-	else {
-		jump = 1.0 / revpday;
-	}
+  if (direc) {                   ///set search direction
+    jump = -1.0 / revpday;
+  }
+  else {
+    jump = 1.0 / revpday;
+  }
 
     for (i = 0; i < itterations && max_elevation <= (minimumElevation * pi / 180); i++){ //search for elevation above minimumElevation
        jdCp+= jump;
        max_elevation = - brentmin(jdCp - range , jdCp, jdCp + range, &Sgp4::sgp4wrap , tol, &jdCp, this);
-		#ifdef ESP8266
-			yield();
-		#endif
+    #ifdef ESP8266
+      yield();
+    #endif
     }
     jdC = jdCp;
     if (i>=itterations) return 0;
 
-	///max elevation
+  ///max elevation
 
     (*passdata).maxelevation = (max_elevation+offset)*180/pi;
     (*passdata).jdmax = jdC;
-	  (*passdata).azmax = floatmod(razel[1] * 180 / pi + 360.0, 360.0);
+    (*passdata).azmax = floatmod(razel[1] * 180 / pi + 360.0, 360.0);
     vis = visible(isdaylight,phi);
 
-    if (isdaylight)	{(*passdata).vismax = daylight;}
+    if (isdaylight)  {(*passdata).vismax = daylight;}
     else if (vis < 1000){(*passdata).vismax = eclipsed;}
     else {(*passdata).vismax = lighted;}
 
-	//start point
+  //start point
 
     range = 0.5/revpday;
     jdC = zbrent(&Sgp4::sgp4wrap, jdCp, jdCp - range, tol, this);
@@ -172,12 +172,12 @@ bool Sgp4::nextpass( passinfo* passdata, int itterations, bool direc, double min
     (*passdata).azstart = floatmod(razel[1] * 180 / pi + 360.0, 360.0);
     vis = visible(isdaylight,startphi);
 
-    if (isdaylight)	{(*passdata).visstart = daylight;}
+    if (isdaylight)  {(*passdata).visstart = daylight;}
     else if (vis < 1000){(*passdata).visstart = eclipsed;}
     else {(*passdata).visstart = lighted;}
     vissum = vis;
 
-	//stop point
+  //stop point
 
     jdC = zbrent(&Sgp4::sgp4wrap, jdCp, jdCp + range, tol, this);
     if (jdC < 0.0) return 0;
@@ -185,45 +185,45 @@ bool Sgp4::nextpass( passinfo* passdata, int itterations, bool direc, double min
     (*passdata).azstop = floatmod(razel[1] * 180 / pi + 360.0, 360.0);
     vis = visible(isdaylight,stopphi);
 
-    if (isdaylight)	{(*passdata).visstop = daylight;}
+    if (isdaylight)  {(*passdata).visstop = daylight;}
     else if (vis < 1000){(*passdata).visstop = eclipsed;}
     else {(*passdata).visstop = lighted;}
     vissum += vis;
 
-	//global visibility
+  //global visibility
 
-    if ((*passdata).visstop == daylight && (*passdata).visstart == daylight)	{(*passdata).sight = daylight;}
+    if ((*passdata).visstop == daylight && (*passdata).visstart == daylight)  {(*passdata).sight = daylight;}
     else if (vissum < 1000){(*passdata).sight = eclipsed;}
-	  else {(*passdata).sight = lighted;}
+    else {(*passdata).sight = lighted;}
 
-	//transit
+  //transit
 
-	if (sgn(startphi) == sgn(stopphi)) {
-		(*passdata).transit = none;
-		(*passdata).jdtransit = NAN;
-		(*passdata).aztransit = NAN;
-		(*passdata).transitelevation = NAN;
+  if (sgn(startphi) == sgn(stopphi)) {
+    (*passdata).transit = none;
+    (*passdata).jdtransit = NAN;
+    (*passdata).aztransit = NAN;
+    (*passdata).transitelevation = NAN;
     (*passdata).vistransit = daylight;
-	}
-	else {
-		if (sgn(startphi)>sgn(stopphi)) {
-			(*passdata).transit = enter;
-		}
-		else {
-			(*passdata).transit = leave;
-		}
+  }
+  else {
+    if (sgn(startphi)>sgn(stopphi)) {
+      (*passdata).transit = enter;
+    }
+    else {
+      (*passdata).transit = leave;
+    }
 
-		jdC = zbrent(&Sgp4::visiblewrap, (*passdata).jdstart, (*passdata).jdstop, tol, this);
-		if (jdC < 0.0) return 0;
-		(*passdata).jdtransit = jdC;
-		(*passdata).aztransit = floatmod(razel[1] * 180 / pi + 360.0, 360.0);
-		(*passdata).transitelevation = razel[2] * 180 / pi;
+    jdC = zbrent(&Sgp4::visiblewrap, (*passdata).jdstart, (*passdata).jdstop, tol, this);
+    if (jdC < 0.0) return 0;
+    (*passdata).jdtransit = jdC;
+    (*passdata).aztransit = floatmod(razel[1] * 180 / pi + 360.0, 360.0);
+    (*passdata).transitelevation = razel[2] * 180 / pi;
     vis = visible(isdaylight,phi);
 
-    if (isdaylight)	{(*passdata).vistransit = daylight;}
+    if (isdaylight)  {(*passdata).vistransit = daylight;}
     else {(*passdata).vistransit = eclipsed;}
     //else {(*passdata).visstop = lighted;}
-	}
+  }
 
 
     (*passdata).minelevation = offset*180/pi;
@@ -272,9 +272,9 @@ bool Sgp4::initpredpoint( unsigned long unix, double startelevation){
 }
 
 double Sgp4::getpredpoint() {
-	return jdCp;
+  return jdCp;
 }
 
 void Sgp4::setpredpoint(double bob) {
-	jdCp = bob;
+  jdCp = bob;
 }
